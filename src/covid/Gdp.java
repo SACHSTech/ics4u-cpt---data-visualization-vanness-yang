@@ -17,7 +17,19 @@ public class Gdp extends Statistic{
         return gdpYear;
     }
 
+    public void setGdpYear(String year){
+        gdpYear = year;
+    }
+
     public String getGdpPerCapita(){
         return gdpPerCapita;
+    }
+
+    public void setGdpPerCapita(String perCapita){
+        gdpPerCapita = perCapita;
+    }
+
+    public String toString(){
+        return this.getCountryName() + "," + this.getCountryCode() + "," + this.getCountryContinent() + "," + gdpYear + "," + gdpPerCapita;
     }
 }
