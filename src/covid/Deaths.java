@@ -5,28 +5,20 @@ import covid.*;
 public class Deaths extends Statistic{
     
     private String deathDate;
-    private String deathPerMillion;
+    private double deathPerMillion;
 
     public Deaths(String name, String code, String continent, String date, String dead){
         super(name, code, continent);
         this.deathDate = date;
-        this.deathPerMillion = dead;
+        this.deathPerMillion = Double.parseDouble(dead);
     }
 
     public String getDeathDate(){
         return deathDate;
     }
 
-    public void setDeathDate(String date){
-        deathDate = date;
-    }
-
-    public String getDeathPerMillion(){
+    public double getDeathPerMillion(){
         return deathPerMillion;
-    }
-
-    public void setDeathPerMillion(String dead){
-        deathPerMillion = dead;
     }
 
     public String toString(){

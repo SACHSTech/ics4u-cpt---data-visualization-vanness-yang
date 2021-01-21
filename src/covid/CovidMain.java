@@ -10,6 +10,11 @@ public class CovidMain {
     static Gdpdataset gdpData;
     public static void main(String[] args) throws IOException{
         CountryCreator();
+        //deathData.mergeSort("name");
+        //deathData.printResults();
+        //gdpData.mergeSort("gdp");
+        //gdpData.printResults();
+
 
     }
 
