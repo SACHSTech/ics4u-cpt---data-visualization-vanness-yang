@@ -115,4 +115,23 @@ public class Gdpdataset {
        
     }
 
+    public ArrayList<Gdp> filter(String filter){
+        
+        String element;
+
+        ArrayList<Gdp> filtered = new ArrayList<Gdp>();
+
+        for(int i = 0; i < gdpData.size(); i++){
+           element = gdpData.get(i).getCountryContinent();
+
+           if(element.equalsIgnoreCase(filter)){
+               filtered.add(gdpData.get(i));       
+           }
+       }
+       
+       return filtered;
+       
+    }
+
+
 }

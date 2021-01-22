@@ -4,19 +4,30 @@ import java.io.*;
 import covid.*;
 import java.util.*;
 
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
 public class CovidMain {
     
     static Deathdataset deathData;
     static Gdpdataset gdpData;
     public static void main(String[] args) throws IOException{
         CountryCreator();
+        //System.out.println(deathData.filter("Asia"));
         //deathData.mergeSort("deaths");
         //deathData.printResults();
         //gdpData.mergeSort("gdp");
         //gdpData.printResults();
 
         
-        //System.out.println(gdpData.linearSearch("china"));
+        //System.out.println(gdpData.filter("Australia"));
 
 
     }
@@ -70,6 +81,32 @@ public class CovidMain {
         }
 
         gdpfile.close();
+
+    }
+
+    public void start(Stage stage){
+
+        final ObservableList<Deaths> deathTable = FXCollections.observableArrayList();
+
+        TableColumn name = new TableColumn();
+        name.setText("Country");
+        name.setCellValueFactory(new PropertyValueFactory("Country"));
+
+        TableColumn code = new TableColumn();
+        code.setText("Country Code");
+        code.setCellValueFactory(new PropertyValueFactory("Country Code"));
+
+        TableColumn continent = new TableColumn();
+        continent.setText("Continent");
+        continent.setCellValueFactory(new PropertyValueFactory("Continent"));
+
+        TableColumn date = new TableColumn();
+        date.setText("Death Date");
+        date.setCellValueFactory(new PropertyValueFactory("Death Date"));
+
+        TableColumn toll = new TableColumn();
+        toll.setText("Deaths Per Million");
+        toll.setCellValueFactory(new PropertyValueFactory("Deaths Per Million"));
 
     }
     

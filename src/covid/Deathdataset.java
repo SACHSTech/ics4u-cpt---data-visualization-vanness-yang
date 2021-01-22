@@ -115,4 +115,22 @@ public class Deathdataset {
        
     }
 
+    public ArrayList<Deaths> filter(String filter){
+        
+        String element;
+
+        ArrayList<Deaths> filtered = new ArrayList<Deaths>();
+
+        for(int i = 0; i < deathData.size(); i++){
+           element = deathData.get(i).getCountryContinent();
+
+           if(element.equalsIgnoreCase(filter)){
+               filtered.add(deathData.get(i));       
+           }
+       }
+       
+       return filtered;
+       
+    }
+
 }
