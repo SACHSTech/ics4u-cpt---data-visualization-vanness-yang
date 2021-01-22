@@ -89,4 +89,30 @@ public class Gdpdataset {
         }
     }
 
+    public ArrayList<Gdp> linearSearch(String key){
+        
+        String element1;
+        String element2;
+        String element3;
+
+        ArrayList<Gdp> searchResults = new ArrayList<Gdp>();
+
+        for(int i = 0; i < gdpData.size(); i++){
+           element1 = gdpData.get(i).getCountryName();
+           element2 = gdpData.get(i).getCountryCode();  
+           element3 = gdpData.get(i).getCountryContinent();
+
+           if(element1.equalsIgnoreCase(key)){
+               searchResults.add(gdpData.get(i));       
+           }else if(element2.equalsIgnoreCase(key)){
+               searchResults.add(gdpData.get(i));
+           }else if(element3.equalsIgnoreCase(key)){
+               searchResults.add(gdpData.get(i));
+           }
+       }
+       
+       return searchResults;
+       
+    }
+
 }

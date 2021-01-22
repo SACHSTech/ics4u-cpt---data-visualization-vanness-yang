@@ -89,4 +89,30 @@ public class Deathdataset {
         }
     }
 
+    public ArrayList<Deaths> linearSearch(String key){
+        
+        String element1;
+        String element2;
+        String element3;
+
+        ArrayList<Deaths> searchResults = new ArrayList<Deaths>();
+
+        for(int i = 0; i < deathData.size(); i++){
+           element1 = deathData.get(i).getCountryName();
+           element2 = deathData.get(i).getCountryCode();  
+           element3 = deathData.get(i).getCountryContinent();
+
+           if(element1.equalsIgnoreCase(key)){
+               searchResults.add(deathData.get(i));       
+           }else if(element2.equalsIgnoreCase(key)){
+               searchResults.add(deathData.get(i));
+           }else if(element3.equalsIgnoreCase(key)){
+               searchResults.add(deathData.get(i));
+           }
+       }
+       
+       return searchResults;
+       
+    }
+
 }
