@@ -14,6 +14,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+
 public class TableViewApp extends Application{
 
     static Deathdataset deathData;
@@ -23,6 +33,8 @@ public class TableViewApp extends Application{
         CountryCreator();
         launch(args);
     }
+
+
     
     public static void CountryCreator() throws IOException{
         BufferedReader deathfile = new BufferedReader(new FileReader("src/covid/newdeaths.csv"));
@@ -76,7 +88,11 @@ public class TableViewApp extends Application{
 
     }
 
-    public Parent createContent(){
+    public Parent createContent() {
+        //Controls to be added to the HBox
+        //Label label = new Label("Test:");
+        //TextField tb = new TextField();
+        //Button button = new Button("Button");
 
         final ObservableList<Deaths> deathTable = FXCollections.observableArrayList(deathData.getDeathObject());
 
@@ -103,8 +119,40 @@ public class TableViewApp extends Application{
         final TableView deathTableView = new TableView();
         deathTableView.setItems(deathTable);
         deathTableView.getColumns().addAll(name, code, continent, date, toll);
-        return deathTableView;
 
+        final ObservableList<Gdp> gdpTable = FXCollections.observableArrayList(gdpData.getGdpObject());
+        
+        TableColumn name2 = new TableColumn();
+        name2.setText("Country");
+        name2.setCellValueFactory(new PropertyValueFactory("countryName"));
+
+        TableColumn code2 = new TableColumn();
+        code2.setText("Country Code");
+        code2.setCellValueFactory(new PropertyValueFactory("countryCode"));
+
+        TableColumn continent2 = new TableColumn();
+        continent2.setText("Continent");
+        continent2.setCellValueFactory(new PropertyValueFactory("countryContinent"));
+
+        TableColumn year = new TableColumn();
+        year.setText("Year");
+        year.setCellValueFactory(new PropertyValueFactory("gdpYear"));
+
+        TableColumn number = new TableColumn();
+        number.setText("GDP");
+        number.setCellValueFactory(new PropertyValueFactory("gdpPerCapita"));
+
+        final TableView gdpTableView = new TableView();
+        gdpTableView.setItems(gdpTable);
+        gdpTableView.getColumns().addAll(name2, code2, continent2, year, number);
+ 
+        //HBox with spacing = 5
+        HBox hbox = new HBox(250);
+        hbox.setPrefWidth(1200);
+        hbox.setPrefHeight(500);
+        hbox.getChildren().addAll(deathTableView, gdpTableView);
+        //hbox.setAlignment(Pos.CENTER);
+        return hbox;
     }
 
     @Override public void start(Stage primaryStage) throws Exception {

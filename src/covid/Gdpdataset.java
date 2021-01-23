@@ -21,6 +21,10 @@ public class Gdpdataset {
         }
     }
 
+    public ArrayList<Gdp> getGdpObject(){
+        return gdpData;
+    }
+
     public void mergeSort(String type){       
         divide(0, gdpData.size() - 1, type);
     }
