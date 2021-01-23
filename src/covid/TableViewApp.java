@@ -23,6 +23,31 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Side;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+ 
+import java.io.InputStream;
 
 public class TableViewApp extends Application{
 
@@ -89,11 +114,8 @@ public class TableViewApp extends Application{
     }
 
     public Parent createContent() {
-        //Controls to be added to the HBox
-        //Label label = new Label("Test:");
-        //TextField tb = new TextField();
-        //Button button = new Button("Button");
 
+        //Death Toll Data TableView
         final ObservableList<Deaths> deathTable = FXCollections.observableArrayList(deathData.getDeathObject());
 
         TableColumn name = new TableColumn();
@@ -120,6 +142,7 @@ public class TableViewApp extends Application{
         deathTableView.setItems(deathTable);
         deathTableView.getColumns().addAll(name, code, continent, date, toll);
 
+        // GDP Data TableView
         final ObservableList<Gdp> gdpTable = FXCollections.observableArrayList(gdpData.getGdpObject());
         
         TableColumn name2 = new TableColumn();
@@ -145,13 +168,42 @@ public class TableViewApp extends Application{
         final TableView gdpTableView = new TableView();
         gdpTableView.setItems(gdpTable);
         gdpTableView.getColumns().addAll(name2, code2, continent2, year, number);
+
+        // TabPane for Charts
+        TabPane tabPane = new TabPane();
+        tabPane.setPrefSize(1280, 660);
+        tabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
+        tabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
+        
+        Tab deathchart = new Tab();
+        Tab gdpchart = new Tab();
  
-        //HBox with spacing = 5
-        HBox hbox = new HBox(250);
-        hbox.setPrefWidth(1200);
-        hbox.setPrefHeight(500);
-        hbox.getChildren().addAll(deathTableView, gdpTableView);
-        //hbox.setAlignment(Pos.CENTER);
+        tabPane.setRotateGraphic(false);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
+        tabPane.setSide(Side.TOP);
+        
+        deathchart.setText("Death Toll Chart");
+
+        deathchart.setContent(deathTableView);
+        tabPane.getTabs().add(deathchart);
+
+        tabPane.setRotateGraphic(false);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
+        tabPane.setSide(Side.TOP);
+        
+        gdpchart.setText("GDP Chart");
+
+        gdpchart.setContent(gdpTableView);
+        tabPane.getTabs().add(gdpchart);
+
+        // Creating Hbox
+        HBox hbox = new HBox(10);
+        hbox.setPrefWidth(1280);
+        hbox.setPrefHeight(660);
+        hbox.getChildren().addAll(tabPane);
+        hbox.setAlignment(Pos.CENTER);
+        //hbox.setHgrow(deathTableView, Priority.ALWAYS);
+        //hbox.setHgrow(gdpTableView, Priority.ALWAYS);
         return hbox;
     }
 
