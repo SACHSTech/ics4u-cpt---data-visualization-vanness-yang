@@ -15,6 +15,10 @@ public class Deathdataset {
         deathData.add(newDeaths);
     }
 
+    public ArrayList<Deaths> getDeathObject(){
+        return deathData;
+    }
+
     public void printResults(){
         for(int i = 0; i < deathData.size(); i++){
             System.out.println(deathData.get(i).toString());
@@ -132,5 +136,5 @@ public class Deathdataset {
        return filtered;
        
     }
-
+    
 }
