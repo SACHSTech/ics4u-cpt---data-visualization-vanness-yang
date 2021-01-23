@@ -126,18 +126,20 @@ public class Deathdataset {
         ArrayList<Deaths> filtered = new ArrayList<Deaths>();
 
         for(int i = 0; i < deathData.size(); i++){
-           element = deathData.get(i).getCountryContinent();
+            
+            element = deathData.get(i).getCountryContinent();
 
-           if(element.equalsIgnoreCase(filter)){
+            if(element.equalsIgnoreCase(filter)){
                filtered.add(deathData.get(i));       
-           }
+            }
         }
 
         int i = 0;
         int j = 0;
+        deathData.removeAll(deathData);
 
         while(i < filtered.size()){
-            deathData.set(j, filtered.get(i++));
+            deathData.add(j, filtered.get(i++));
             j++;
         }
        

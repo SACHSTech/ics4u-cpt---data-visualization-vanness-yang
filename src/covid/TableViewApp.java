@@ -131,11 +131,10 @@ public class TableViewApp extends Application{
         //filters.getValue();
         String value = (String) filters.getValue();
         if(value.equals("Africa")){
+            ArrayList<Deaths> filtered = new ArrayList<Deaths>();
             deathData.filter("Africa");
-            CountryCreator();
+            
         }
-
-
 
         // Death Toll Data TableView
         final ObservableList<Deaths> deathTable = FXCollections.observableArrayList(deathData.getDeathObject());
@@ -163,6 +162,7 @@ public class TableViewApp extends Application{
         final TableView deathTableView = new TableView();
         deathTableView.setItems(deathTable);
         deathTableView.getColumns().addAll(name, code, continent, date, toll);
+        
 
         // GDP Data TableView
         final ObservableList<Gdp> gdpTable = FXCollections.observableArrayList(gdpData.getGdpObject());
