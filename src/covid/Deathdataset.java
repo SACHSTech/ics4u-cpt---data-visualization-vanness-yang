@@ -119,7 +119,7 @@ public class Deathdataset {
        
     }
 
-    public ArrayList<Deaths> filter(String filter){
+    public void filter(String filter){
         
         String element;
 
@@ -131,9 +131,15 @@ public class Deathdataset {
            if(element.equalsIgnoreCase(filter)){
                filtered.add(deathData.get(i));       
            }
-       }
-       
-       return filtered;
+        }
+
+        int i = 0;
+        int j = 0;
+
+        while(i < filtered.size()){
+            deathData.set(j, filtered.get(i++));
+            j++;
+        }
        
     }
     

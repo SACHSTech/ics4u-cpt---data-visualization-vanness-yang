@@ -3,6 +3,7 @@ package covid;
 import java.io.*;
 import java.util.*;
 import covid.*;
+import javafx.*;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -46,6 +47,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import javafx.scene.control.ChoiceBox;
  
 import java.io.InputStream;
 
@@ -113,9 +116,28 @@ public class TableViewApp extends Application{
 
     }
 
-    public Parent createContent() {
+    public Parent createContent() throws IOException{
 
-        //Death Toll Data TableView
+        // ChoiceBox for Filters
+        ChoiceBox filters = new ChoiceBox();
+        filters.getItems().addAll("CONTINENTS", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
+        filters.getSelectionModel().selectFirst();
+        //filters.getItems().add("Africa");
+        //filters.getItems().add("Asia");
+        //filters.getItems().add("Australia");
+        //filters.getItems().add("Europe");
+        //filters.getItems().add("North America");
+        //filters.getItems().add("South America");
+        //filters.getValue();
+        String value = (String) filters.getValue();
+        if(value.equals("Africa")){
+            deathData.filter("Africa");
+            CountryCreator();
+        }
+
+
+
+        // Death Toll Data TableView
         final ObservableList<Deaths> deathTable = FXCollections.observableArrayList(deathData.getDeathObject());
 
         TableColumn name = new TableColumn();
@@ -171,7 +193,7 @@ public class TableViewApp extends Application{
 
         // TabPane for Charts
         TabPane tabPane = new TabPane();
-        tabPane.setPrefSize(1280, 660);
+        tabPane.setPrefSize(800, 660);
         tabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         tabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         
@@ -198,12 +220,10 @@ public class TableViewApp extends Application{
 
         // Creating Hbox
         HBox hbox = new HBox(10);
-        hbox.setPrefWidth(1280);
+        hbox.setPrefWidth(1250);
         hbox.setPrefHeight(660);
-        hbox.getChildren().addAll(tabPane);
-        hbox.setAlignment(Pos.CENTER);
-        //hbox.setHgrow(deathTableView, Priority.ALWAYS);
-        //hbox.setHgrow(gdpTableView, Priority.ALWAYS);
+        hbox.getChildren().addAll(tabPane, filters);
+        hbox.setAlignment(Pos.TOP_LEFT);
         return hbox;
     }
 
