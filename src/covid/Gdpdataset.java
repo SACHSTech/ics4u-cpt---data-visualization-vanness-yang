@@ -2,6 +2,8 @@ package covid;
 
 import covid.*;
 import java.util.*;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 
 public class Gdpdataset {
 
@@ -51,7 +53,7 @@ public class Gdpdataset {
         int rightIndex = midIndex + 1;
         
         while(leftIndex <= midIndex && rightIndex <= endIndex){
-            if(type.equalsIgnoreCase("gdp")){
+            if(type.equalsIgnoreCase("GDP")){
                 if((gdpData.get(leftIndex).getGdpPerCapita()) <= (gdpData.get(rightIndex).getGdpPerCapita())){
                     mergedSortedArray.add(gdpData.get(leftIndex));
                     leftIndex++;
@@ -59,7 +61,7 @@ public class Gdpdataset {
                     mergedSortedArray.add(gdpData.get(rightIndex));
                     rightIndex++;
                 }
-            }else if(type.equalsIgnoreCase("name")){
+            }else if(type.equalsIgnoreCase("Alphabetical")){
                 int comparison; 
                 comparison = gdpData.get(leftIndex).getCountryName().compareTo(gdpData.get(rightIndex).getCountryName());
                 if(comparison < 0){
@@ -119,21 +121,36 @@ public class Gdpdataset {
        
     }
 
-    public ArrayList<Gdp> filter(String filter){
+    public ObservableList<Gdp> getSortedObservableList(String sort){
+        this.mergeSort(sort);
+
+        return FXCollections.observableList(gdpData);
+
+    }
+
+    public ObservableList<Gdp> filter(String filter){
         
         String element;
+        int i;
 
         ArrayList<Gdp> filtered = new ArrayList<Gdp>();
 
-        for(int i = 0; i < gdpData.size(); i++){
-           element = gdpData.get(i).getCountryContinent();
-
-           if(element.equalsIgnoreCase(filter)){
-               filtered.add(gdpData.get(i));       
-           }
-       }
+        if(filter.equals("Default")){
+            for(i = 0; i < gdpData.size(); i++){
+                filtered.add(gdpData.get(i));
+            }
+        }else{
+            for(i = 0; i < gdpData.size(); i++){
+                element = gdpData.get(i).getCountryContinent();
+     
+                if(element.equalsIgnoreCase(filter)){
+                    filtered.add(gdpData.get(i));       
+                }
+            }
+        }
+        
        
-       return filtered;
+       return FXCollections.observableList(filtered);
        
     }
 

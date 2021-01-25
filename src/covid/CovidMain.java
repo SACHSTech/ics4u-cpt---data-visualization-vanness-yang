@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 
 public class CovidMain {
     
+    static Deathdataset deathData;
+    static Gdpdataset gdpData;
 
     public static void main(String[] args) throws IOException{
         //TableViewApp.CountryCreator();
@@ -25,6 +27,8 @@ public class CovidMain {
         //deathData.printResults();
         //gdpData.mergeSort("gdp");
         //gdpData.printResults();
+        //Interface.CountryCreator();
+        
 
         
         //System.out.println(gdpData.filter("Australia"));

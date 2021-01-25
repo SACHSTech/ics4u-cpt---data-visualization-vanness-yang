@@ -2,6 +2,8 @@ package covid;
 
 import covid.*;
 import java.util.*;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 
 public class Deathdataset {
 
@@ -51,7 +53,7 @@ public class Deathdataset {
         int rightIndex = midIndex + 1;
         
         while(leftIndex <= midIndex && rightIndex <= endIndex){
-            if(type.equalsIgnoreCase("deaths")){
+            if(type.equalsIgnoreCase("Death Toll")){
                 if((deathData.get(leftIndex).getDeathPerMillion()) <= (deathData.get(rightIndex).getDeathPerMillion())){
                     mergedSortedArray.add(deathData.get(leftIndex));
                     leftIndex++;
@@ -59,7 +61,7 @@ public class Deathdataset {
                     mergedSortedArray.add(deathData.get(rightIndex));
                     rightIndex++;
                 }
-            }else if(type.equalsIgnoreCase("name")){
+            }else if(type.equalsIgnoreCase("Alphabetical")){
                 int comparison; 
                 comparison = deathData.get(leftIndex).getCountryName().compareTo(deathData.get(rightIndex).getCountryName());
                 if(comparison < 0){
@@ -119,29 +121,37 @@ public class Deathdataset {
        
     }
 
-    public void filter(String filter){
+    public ObservableList<Deaths> getSortedObservableList(String sort){
+        this.mergeSort(sort);
+
+        return FXCollections.observableList(deathData);
+
+    }
+
+    public ObservableList<Deaths> filter(String filter){
         
         String element;
+        int i;
 
         ArrayList<Deaths> filtered = new ArrayList<Deaths>();
 
-        for(int i = 0; i < deathData.size(); i++){
+        if(filter.equals("Default")){
+            for(i = 0; i < deathData.size(); i++){
+                filtered.add(deathData.get(i));
+            }
+        }else{
+            for(i = 0; i < deathData.size(); i++){
             
-            element = deathData.get(i).getCountryContinent();
-
-            if(element.equalsIgnoreCase(filter)){
-               filtered.add(deathData.get(i));       
+                element = deathData.get(i).getCountryContinent();
+    
+                if(element.equalsIgnoreCase(filter)){
+                   filtered.add(deathData.get(i));       
+                }
             }
         }
-
-        int i = 0;
-        int j = 0;
-        deathData.removeAll(deathData);
-
-        while(i < filtered.size()){
-            deathData.add(j, filtered.get(i++));
-            j++;
-        }
+        
+        
+        return FXCollections.observableList(filtered);
        
     }
     

@@ -48,11 +48,30 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javafx.application.Application; 
+import javafx.scene.Scene; 
+import javafx.scene.control.*; 
+import javafx.scene.layout.*; 
+import javafx.event.ActionEvent; 
+import javafx.event.EventHandler; 
+import javafx.collections.*; 
+import javafx.beans.value.*; 
+import javafx.stage.Stage; 
+
 import javafx.scene.control.ChoiceBox;
  
 import java.io.InputStream;
 
-public class TableViewApp extends Application{
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+
+public class Interface extends Application{
 
     static Deathdataset deathData;
     static Gdpdataset gdpData;
@@ -62,8 +81,6 @@ public class TableViewApp extends Application{
         launch(args);
     }
 
-
-    
     public static void CountryCreator() throws IOException{
         BufferedReader deathfile = new BufferedReader(new FileReader("src/covid/newdeaths.csv"));
         BufferedReader gdpfile = new BufferedReader(new FileReader("src/covid/newgdp.csv"));
@@ -120,22 +137,9 @@ public class TableViewApp extends Application{
 
         // ChoiceBox for Filters
         ChoiceBox filters = new ChoiceBox();
-        filters.getItems().addAll("CONTINENTS", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
+        filters.getItems().addAll("Default", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
         filters.getSelectionModel().selectFirst();
-        //filters.getItems().add("Africa");
-        //filters.getItems().add("Asia");
-        //filters.getItems().add("Australia");
-        //filters.getItems().add("Europe");
-        //filters.getItems().add("North America");
-        //filters.getItems().add("South America");
-        //filters.getValue();
-        String value = (String) filters.getValue();
-        if(value.equals("Africa")){
-            ArrayList<Deaths> filtered = new ArrayList<Deaths>();
-            deathData.filter("Africa");
-            
-        }
-
+        
         // Death Toll Data TableView
         final ObservableList<Deaths> deathTable = FXCollections.observableArrayList(deathData.getDeathObject());
 
@@ -162,7 +166,31 @@ public class TableViewApp extends Application{
         final TableView deathTableView = new TableView();
         deathTableView.setItems(deathTable);
         deathTableView.getColumns().addAll(name, code, continent, date, toll);
-        
+
+        // Listener for choicebox for deathData
+        final ChangeListener<String> deathBoxListener =
+            (ObservableValue<? extends String> observable,
+             String oldValue, String newValue) -> {
+                String change = (String) filters.getValue();
+                final ObservableList<Deaths> newDeathTable = FXCollections.observableArrayList(deathData.filter(change));
+                deathTableView.setItems(newDeathTable);
+            };
+        filters.valueProperty().addListener(deathBoxListener);
+
+        // MergeSort ChoiceBox for deathData
+        ChoiceBox deathSortBox = new ChoiceBox();
+        deathSortBox.getItems().addAll("Default", "Alphabetical", "Death Toll");
+        deathSortBox.getSelectionModel().selectFirst();
+        final ChangeListener<String> deathSortBoxListener =
+            (ObservableValue<? extends String> observable,
+             String oldValue, String newValue) -> {
+                String change = (String) deathSortBox.getValue();
+                if(!change.equals("Default")){
+                    final ObservableList<Deaths> newDeathTable = deathData.getSortedObservableList(change);
+                    deathTableView.setItems(newDeathTable);
+                }
+            };
+        deathSortBox.valueProperty().addListener(deathSortBoxListener);
 
         // GDP Data TableView
         final ObservableList<Gdp> gdpTable = FXCollections.observableArrayList(gdpData.getGdpObject());
@@ -191,38 +219,48 @@ public class TableViewApp extends Application{
         gdpTableView.setItems(gdpTable);
         gdpTableView.getColumns().addAll(name2, code2, continent2, year, number);
 
-        // TabPane for Charts
+        // Listener for choicebox for gdpData
+        final ChangeListener<String> gdpBoxListener =
+            (ObservableValue<? extends String> observable,
+             String oldValue, String newValue) -> {
+                String change = (String) filters.getValue();
+                final ObservableList<Gdp> newGdpTable = FXCollections.observableArrayList(gdpData.filter(change));
+                gdpTableView.setItems(newGdpTable);
+            };
+        filters.valueProperty().addListener(gdpBoxListener);
+
+        
+
+        // TabPane for TableViews
         TabPane tabPane = new TabPane();
-        tabPane.setPrefSize(800, 660);
+        tabPane.setPrefSize(550, 650);
         tabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         tabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         
-        Tab deathchart = new Tab();
-        Tab gdpchart = new Tab();
+        Tab deathview = new Tab();
+        Tab gdpview = new Tab();
  
         tabPane.setRotateGraphic(false);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
         tabPane.setSide(Side.TOP);
         
-        deathchart.setText("Death Toll Chart");
-
-        deathchart.setContent(deathTableView);
-        tabPane.getTabs().add(deathchart);
+        deathview.setText("Death Toll Chart");
+        deathview.setContent(deathTableView);
+        tabPane.getTabs().add(deathview);
 
         tabPane.setRotateGraphic(false);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
         tabPane.setSide(Side.TOP);
         
-        gdpchart.setText("GDP Chart");
-
-        gdpchart.setContent(gdpTableView);
-        tabPane.getTabs().add(gdpchart);
+        gdpview.setText("GDP Chart");
+        gdpview.setContent(gdpTableView);
+        tabPane.getTabs().add(gdpview);
 
         // Creating Hbox
         HBox hbox = new HBox(10);
         hbox.setPrefWidth(1250);
         hbox.setPrefHeight(660);
-        hbox.getChildren().addAll(tabPane, filters);
+        hbox.getChildren().addAll(tabPane, filters, deathSortBox, gdpSortBox);
         hbox.setAlignment(Pos.TOP_LEFT);
         return hbox;
     }
