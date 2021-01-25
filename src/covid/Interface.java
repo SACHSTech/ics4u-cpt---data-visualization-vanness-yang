@@ -269,11 +269,26 @@ public class Interface extends Application{
         gdpview.setContent(gdpTableView);
         tabPane.getTabs().add(gdpview);
 
+        // Textfield for search box 
+        TextField text = new TextField("");
+        text.setMaxSize(140, TextField.USE_COMPUTED_SIZE);
+        final ChangeListener<String> searchListener =
+            (ObservableValue<? extends String> observable,
+             String oldValue, String newValue) -> {
+                String change = (String) text.getText();
+                
+                final ObservableList<Deaths> newDeathTable = deathData.linearSearch(change);
+                deathTableView.setItems(newDeathTable);
+                final ObservableList<Gdp> newGdpTable = gdpData.linearSearch(change);
+                gdpTableView.setItems(newGdpTable);
+            };
+        text.textProperty().addListener(searchListener);
+
         // Creating Hbox
         HBox hbox = new HBox(10);
         hbox.setPrefWidth(1250);
         hbox.setPrefHeight(660);
-        hbox.getChildren().addAll(tabPane, filters, deathSortBox, gdpSortBox);
+        hbox.getChildren().addAll(tabPane, filters, deathSortBox, gdpSortBox, text);
         hbox.setAlignment(Pos.TOP_LEFT);
         return hbox;
     }
@@ -283,6 +298,4 @@ public class Interface extends Application{
         primaryStage.show();
     }
 
-    
-    
 }

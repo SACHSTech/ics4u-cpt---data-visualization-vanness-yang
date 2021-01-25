@@ -95,7 +95,7 @@ public class Deathdataset {
         }
     }
 
-    public ArrayList<Deaths> linearSearch(String key){
+    public ObservableList<Deaths> linearSearch(String key){
         
         String element1;
         String element2;
@@ -108,16 +108,24 @@ public class Deathdataset {
            element2 = deathData.get(i).getCountryCode();  
            element3 = deathData.get(i).getCountryContinent();
 
-           if(element1.equalsIgnoreCase(key)){
-               searchResults.add(deathData.get(i));       
-           }else if(element2.equalsIgnoreCase(key)){
-               searchResults.add(deathData.get(i));
-           }else if(element3.equalsIgnoreCase(key)){
-               searchResults.add(deathData.get(i));
-           }
+            if(key.equals("")){
+                for(i = 0; i < deathData.size(); i++){
+                    searchResults.add(deathData.get(i));
+                }   
+            }else{
+                if(element1.equalsIgnoreCase(key)){
+                    searchResults.add(deathData.get(i));       
+                }else if(element2.equalsIgnoreCase(key)){
+                    searchResults.add(deathData.get(i));
+                }else if(element3.equalsIgnoreCase(key)){
+                    searchResults.add(deathData.get(i));
+                }
+            }  
+
+           
        }
        
-       return searchResults;
+       return FXCollections.observableList(searchResults);
        
     }
 
@@ -154,5 +162,7 @@ public class Deathdataset {
         return FXCollections.observableList(filtered);
        
     }
+
+    
     
 }
