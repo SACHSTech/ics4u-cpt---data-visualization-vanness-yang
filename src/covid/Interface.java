@@ -229,7 +229,20 @@ public class Interface extends Application{
             };
         filters.valueProperty().addListener(gdpBoxListener);
 
-        
+        // MergeSort ChoiceBox for gdpData
+        ChoiceBox gdpSortBox = new ChoiceBox();
+        gdpSortBox.getItems().addAll("Default", "Alphabetical", "GDP");
+        gdpSortBox.getSelectionModel().selectFirst();
+        final ChangeListener<String> gdpSortBoxListener =
+            (ObservableValue<? extends String> observable,
+             String oldValue, String newValue) -> {
+                String change = (String) gdpSortBox.getValue();
+                if(!change.equals("Default")){
+                    final ObservableList<Gdp> newGdpTable = gdpData.getSortedObservableList(change);
+                    gdpTableView.setItems(newGdpTable);
+                }
+            };
+        gdpSortBox.valueProperty().addListener(gdpSortBoxListener);
 
         // TabPane for TableViews
         TabPane tabPane = new TabPane();
