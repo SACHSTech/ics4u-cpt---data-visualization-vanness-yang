@@ -4,6 +4,7 @@ import covid.*;
 import java.util.*;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.scene.chart.BarChart;
 
 public class Gdpdataset {
 
@@ -240,6 +241,29 @@ public class Gdpdataset {
     public double count(){
 
         return gdpData.size();
+    }
+
+    public ObservableList<String> getCountryObservableList(){
+
+        ArrayList<String> temp = new ArrayList<String>();
+
+        for(int i = 0; i < gdpData.size(); i++){
+            temp.add(gdpData.get(i).getCountryName());
+        }
+
+        return FXCollections.observableList(temp);
+    }
+
+    public BarChart.Series getBarObjects(){
+
+        BarChart.Series<String, Integer> series = new BarChart.Series<>();
+
+        for(int i = 0; i < gdpData.size(); i++){
+            series.getData().add(new BarChart.Data(gdpData.get(i).getCountryName(), gdpData.get(i).getGdpPerCapita()));
+        }
+
+
+        return series;
     }
 
 

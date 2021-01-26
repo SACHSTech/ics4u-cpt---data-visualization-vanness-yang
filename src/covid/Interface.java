@@ -346,15 +346,21 @@ public class Interface extends Application{
         gdpDeviation.getStylesheets().add(insetTextCss);
 
         CategoryAxis xAxis = new CategoryAxis();
-        //xAxis.setCategories(deathData.getCountryObservableList());
         xAxis.setCategories(deathData.getCountryObservableList());
-        NumberAxis yAxis = new NumberAxis("Deaths", 0.0d, 2000.0d, 1000.0d);
+        NumberAxis yAxis = new NumberAxis("Deaths", 0.0d, 2000.0d, 250.0d);
         ObservableList<BarChart.Series> deathBarchart = FXCollections.observableArrayList(deathData.getBarObjects());
         BarChart deathChart = new BarChart(xAxis, yAxis, deathBarchart, 10.0d);
         deathChart.setLegendVisible(false);
 
+        CategoryAxis xAxis2 = new CategoryAxis();
+        xAxis2.setCategories(gdpData.getCountryObservableList());
+        NumberAxis yAxis2 = new NumberAxis("GDP", 0.0d, 120000.0d, 10000.0d);
+        ObservableList<BarChart.Series> gdpBarchart = FXCollections.observableArrayList(gdpData.getBarObjects());
+        BarChart gdpChart = new BarChart(xAxis2, yAxis2, gdpBarchart, 10.0d);
+        gdpChart.setLegendVisible(false);
+
         TabPane chartTabPane = new TabPane();
-        chartTabPane.setPrefSize(700, 500);
+        chartTabPane.setPrefSize(700, 525);
         chartTabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         chartTabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         
@@ -368,8 +374,9 @@ public class Interface extends Application{
         deathChartTab.setText("Country VS. Deaths");
         deathChartTab.setContent(deathChart);
         gdpChartTab.setText("Country VS. GDP");
-        gdpChartTab.setContent(deathChart);
+        gdpChartTab.setContent(gdpChart);
         chartTabPane.getTabs().add(deathChartTab);
+        chartTabPane.getTabs().add(gdpChartTab);
 
 
         GridPane gridPane = new GridPane();
