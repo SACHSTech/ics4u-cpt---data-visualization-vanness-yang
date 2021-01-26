@@ -4,6 +4,8 @@ import covid.*;
 import java.util.*;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.scene.chart.BarChart;
+
 
 public class Deathdataset {
 
@@ -168,7 +170,7 @@ public class Deathdataset {
         for(i = 0; i < deathData.size(); i++){
             // Finding the Max
             if(deathData.get(i).getDeathPerMillion() >= max){
-                max = deathData.get(i).getDeathPerMillion();
+                max = Math.round(deathData.get(i).getDeathPerMillion() * 100.0) / 100.0;
             }
         }
 
@@ -182,7 +184,7 @@ public class Deathdataset {
 
         for(i = 0; i < deathData.size(); i++){
             if(deathData.get(i).getDeathPerMillion() <= min){
-                min = deathData.get(i).getDeathPerMillion();
+                min = Math.round(deathData.get(i).getDeathPerMillion() * 100.0) / 100.0;
             }
         }
 
@@ -235,10 +237,33 @@ public class Deathdataset {
         }
 
         meanSum = sum / deathData.size();
-        deviation = Math.sqrt(meanSum);
+        deviation = Math.round(Math.sqrt(meanSum) * 100.0) / 100.0;
 
         return deviation;
 
+    }
+
+    public ObservableList<String> getCountryObservableList(){
+
+        ArrayList<String> temp = new ArrayList<String>();
+
+        for(int i = 0; i < deathData.size(); i++){
+            temp.add(deathData.get(i).getCountryName());
+        }
+
+        return FXCollections.observableList(temp);
+    }
+
+    public BarChart.Series getBarObjects(){
+
+        BarChart.Series<String, Integer> series = new BarChart.Series<>();
+
+        for(int i = 0; i < deathData.size(); i++){
+            series.getData().add(new BarChart.Data(deathData.get(i).getCountryName(), deathData.get(i).getDeathPerMillion()));
+        }
+
+
+        return series;
     }
     
     

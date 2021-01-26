@@ -169,7 +169,7 @@ public class Gdpdataset {
         for(i = 0; i < gdpData.size(); i++){
             // Finding the Max
             if(gdpData.get(i).getGdpPerCapita() >= max){
-                max = gdpData.get(i).getGdpPerCapita();
+                max = Math.round(gdpData.get(i).getGdpPerCapita() * 100.0) / 100.0;
             }
         }
 
@@ -183,7 +183,7 @@ public class Gdpdataset {
 
         for(i = 0; i < gdpData.size(); i++){
             if(gdpData.get(i).getGdpPerCapita() <= min){
-                min = gdpData.get(i).getGdpPerCapita();
+                min = Math.round(gdpData.get(i).getGdpPerCapita() * 100.0) / 100.0;
             }
         }
 
@@ -231,10 +231,15 @@ public class Gdpdataset {
         }
 
         meanSum = sum / gdpData.size();
-        deviation = Math.sqrt(meanSum);
+        deviation = Math.round(Math.sqrt(meanSum) * 100.0) / 100.0;
 
         return deviation;
 
+    }
+
+    public double count(){
+
+        return gdpData.size();
     }
 
 
