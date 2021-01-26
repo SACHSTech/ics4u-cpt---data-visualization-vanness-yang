@@ -137,7 +137,7 @@ public class Interface extends Application{
 
         // ChoiceBox for Filters
         ChoiceBox filters = new ChoiceBox();
-        filters.getItems().addAll("Default", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
+        filters.getItems().addAll("Continent Filter", "Default", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
         filters.getSelectionModel().selectFirst();
         
         // Death Toll Data TableView
@@ -172,14 +172,14 @@ public class Interface extends Application{
             (ObservableValue<? extends String> observable,
              String oldValue, String newValue) -> {
                 String change = (String) filters.getValue();
-                final ObservableList<Deaths> newDeathTable = FXCollections.observableArrayList(deathData.filter(change));
+                final ObservableList<Deaths> newDeathTable = deathData.filter(change);
                 deathTableView.setItems(newDeathTable);
             };
         filters.valueProperty().addListener(deathBoxListener);
 
         // MergeSort ChoiceBox for deathData
         ChoiceBox deathSortBox = new ChoiceBox();
-        deathSortBox.getItems().addAll("Default", "Alphabetical", "Death Toll");
+        deathSortBox.getItems().addAll("Death Data Sort", "Default", "Alphabetical", "Death Toll");
         deathSortBox.getSelectionModel().selectFirst();
         final ChangeListener<String> deathSortBoxListener =
             (ObservableValue<? extends String> observable,
@@ -224,14 +224,14 @@ public class Interface extends Application{
             (ObservableValue<? extends String> observable,
              String oldValue, String newValue) -> {
                 String change = (String) filters.getValue();
-                final ObservableList<Gdp> newGdpTable = FXCollections.observableArrayList(gdpData.filter(change));
+                final ObservableList<Gdp> newGdpTable = gdpData.filter(change);
                 gdpTableView.setItems(newGdpTable);
             };
         filters.valueProperty().addListener(gdpBoxListener);
 
         // MergeSort ChoiceBox for gdpData
         ChoiceBox gdpSortBox = new ChoiceBox();
-        gdpSortBox.getItems().addAll("Default", "Alphabetical", "GDP");
+        gdpSortBox.getItems().addAll("GDP Data Sort", "Default", "Alphabetical", "GDP");
         gdpSortBox.getSelectionModel().selectFirst();
         final ChangeListener<String> gdpSortBoxListener =
             (ObservableValue<? extends String> observable,
@@ -246,7 +246,7 @@ public class Interface extends Application{
 
         // TabPane for TableViews
         TabPane tabPane = new TabPane();
-        tabPane.setPrefSize(550, 650);
+        tabPane.setPrefSize(525, 650);
         tabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         tabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         
@@ -257,7 +257,7 @@ public class Interface extends Application{
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
         tabPane.setSide(Side.TOP);
         
-        deathview.setText("Death Toll Chart");
+        deathview.setText("Death Toll Table");
         deathview.setContent(deathTableView);
         tabPane.getTabs().add(deathview);
 
@@ -265,7 +265,7 @@ public class Interface extends Application{
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
         tabPane.setSide(Side.TOP);
         
-        gdpview.setText("GDP Chart");
+        gdpview.setText("GDP Table");
         gdpview.setContent(gdpTableView);
         tabPane.getTabs().add(gdpview);
 
@@ -284,11 +284,51 @@ public class Interface extends Application{
             };
         text.textProperty().addListener(searchListener);
 
+        // Labels for my Summary Points
+        final String insetTextCss = getClass().getResource("LabelDesign.css").toExternalForm();
+        final Label count = new Label("Count: " + deathData.count());
+        final Label deathMax = new Label("Max Deaths: " + deathData.max());
+        final Label deathMin = new Label("Min Deaths: " + deathData.min());
+        final Label deathAverage = new Label("Average Deaths: " + deathData.min());
+        final Label deathMedian = new Label("Median Deaths: " + deathData.min());
+        final Label deathDeviation = new Label("Standard Deviation of Deaths: " + deathData.deviation());
+
+        final Label gdpMax = new Label("Max GDP: " + gdpData.max());
+        final Label gdpMin = new Label("Min GDP: " + gdpData.min());
+        final Label gdpAverage = new Label("Average GDP: " + gdpData.min());
+        final Label gdpMedian = new Label("Median GDP: " + gdpData.min());
+        final Label gdpDeviation = new Label("Standard Deviation of GDP: " + gdpData.deviation());
+        
+        count.setId("label1");
+        count.getStylesheets().add(insetTextCss);
+        deathMax.setId("label1");
+        deathMax.getStylesheets().add(insetTextCss);
+        deathMin.setId("label1");
+        deathMin.getStylesheets().add(insetTextCss);
+        deathAverage.setId("label1");
+        deathAverage.getStylesheets().add(insetTextCss);
+        deathMedian.setId("label1");
+        deathMedian.getStylesheets().add(insetTextCss);
+        deathDeviation.setId("label1");
+        deathDeviation.getStylesheets().add(insetTextCss);
+
+        gdpMax.setId("label1");
+        gdpMax.getStylesheets().add(insetTextCss);
+        gdpMin.setId("label1");
+        gdpMin.getStylesheets().add(insetTextCss);
+        gdpAverage.setId("label1");
+        gdpAverage.getStylesheets().add(insetTextCss);
+        gdpMedian.setId("label1");
+        gdpMedian.getStylesheets().add(insetTextCss);
+        gdpDeviation.setId("label1");
+        gdpDeviation.getStylesheets().add(insetTextCss);
+
+        
         // Creating Hbox
         HBox hbox = new HBox(10);
         hbox.setPrefWidth(1250);
         hbox.setPrefHeight(660);
-        hbox.getChildren().addAll(tabPane, filters, deathSortBox, gdpSortBox, text);
+        hbox.getChildren().addAll(tabPane, filters, deathSortBox, gdpSortBox, text, deathMax, deathMin);
         hbox.setAlignment(Pos.TOP_LEFT);
         return hbox;
     }

@@ -161,5 +161,81 @@ public class Gdpdataset {
        
     }
 
+    public double max(){
+
+        double max = 0;
+        int i;
+        
+        for(i = 0; i < gdpData.size(); i++){
+            // Finding the Max
+            if(gdpData.get(i).getGdpPerCapita() >= max){
+                max = gdpData.get(i).getGdpPerCapita();
+            }
+        }
+
+        return max;
+
+    }
+
+    public double min(){
+        int i;
+        double min = 200000;
+
+        for(i = 0; i < gdpData.size(); i++){
+            if(gdpData.get(i).getGdpPerCapita() <= min){
+                min = gdpData.get(i).getGdpPerCapita();
+            }
+        }
+
+        return min;
+    }
+
+    public double average(){
+        int i; 
+        double total = 0;
+        double average;
+
+        for(i = 0; i < gdpData.size(); i++){
+            // Finding the total 
+            total = total + gdpData.get(i).getGdpPerCapita();
+        }
+
+        // Finding the average
+        average = Math.round((total / gdpData.size()) * 100.0) / 100.0;
+
+        return average;
+
+    }
+
+    public double median(){
+
+        return Math.round(gdpData.get(gdpData.size() / 2).getGdpPerCapita() * 100.0) / 100.0;
+        
+    }
+
+    public double deviation(){
+        double mean;
+        double squared;
+        double sum = 0;
+        double meanSum;
+        double deviation;
+        int i;
+
+        mean = this.average();
+        
+        for(i = 0; i < gdpData.size(); i++){
+            squared = Math.pow((gdpData.get(i).getGdpPerCapita() - mean), 2);
+            sum = sum + squared;
+            
+        
+        }
+
+        meanSum = sum / gdpData.size();
+        deviation = Math.sqrt(meanSum);
+
+        return deviation;
+
+    }
+
 
 }

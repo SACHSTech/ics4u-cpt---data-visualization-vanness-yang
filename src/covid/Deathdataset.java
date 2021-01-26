@@ -121,8 +121,6 @@ public class Deathdataset {
                     searchResults.add(deathData.get(i));
                 }
             }  
-
-           
        }
        
        return FXCollections.observableList(searchResults);
@@ -158,11 +156,90 @@ public class Deathdataset {
             }
         }
         
-        
         return FXCollections.observableList(filtered);
        
     }
 
+    public double max(){
+
+        double max = 0;
+        int i;
+        
+        for(i = 0; i < deathData.size(); i++){
+            // Finding the Max
+            if(deathData.get(i).getDeathPerMillion() >= max){
+                max = deathData.get(i).getDeathPerMillion();
+            }
+        }
+
+        return max;
+
+    }
+
+    public double min(){
+        int i;
+        double min = 10000;
+
+        for(i = 0; i < deathData.size(); i++){
+            if(deathData.get(i).getDeathPerMillion() <= min){
+                min = deathData.get(i).getDeathPerMillion();
+            }
+        }
+
+        return min;
+    }
+
+    public double average(){
+        int i; 
+        double total = 0;
+        double average;
+
+        for(i = 0; i < deathData.size(); i++){
+            // Finding the total 
+            total = total + deathData.get(i).getDeathPerMillion();
+        }
+
+        // Finding the average
+        average = Math.round((total / deathData.size()) * 100.0) / 100.0;
+
+        return average;
+
+    }
+
+    public double median(){
+
+        return Math.round(deathData.get(deathData.size() / 2).getDeathPerMillion() * 100.0) / 100.0;
+        
+    }
+
+    public double count(){
+
+        return deathData.size();
+    }
+
+    public double deviation(){
+        double mean;
+        double squared;
+        double sum = 0;
+        double meanSum;
+        double deviation;
+        int i;
+
+        mean = this.average();
+        
+        for(i = 0; i < deathData.size(); i++){
+            squared = Math.pow((deathData.get(i).getDeathPerMillion() - mean), 2);
+            sum = sum + squared;
+            
+        
+        }
+
+        meanSum = sum / deathData.size();
+        deviation = Math.sqrt(meanSum);
+
+        return deviation;
+
+    }
     
     
 }
