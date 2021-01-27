@@ -265,6 +265,21 @@ public class Deathdataset {
 
         return series;
     }
+
+    public ObservableList<Double> getDeathObservableList(){
+
+        ArrayList<Double> temp = new ArrayList<Double>();
+
+        for(int i = 0; i < deathData.size(); i++){
+            temp.add(deathData.get(i).getDeathPerMillion());
+        }
+
+        return FXCollections.observableList(temp);
+    }
+    
+    public double getDeathElement(int i){
+        return deathData.get(i).getDeathPerMillion();
+    }
     
     
 }

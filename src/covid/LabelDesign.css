@@ -1,9 +1,9 @@
 #label1 .text{
-    -fx-effect: dropshadow(one-pass-box , white, 0, 1 , 0, 1);
+    -fx-effect: dropshadow(one-pass-box , rgb(244, 244, 244), 0, 1 , 0, 1);
 }
 #label1 {
     -fx-background-color: linear-gradient(
-        to bottom, #dbdcdd 0%, #a9a9ab 100%);
-    -fx-padding: 6px;
+        to bottom, rgb(244, 244, 244), rgb(244, 244, 244));
+    -fx-padding: 3px;
     -fx-font-size: 1.0em;
 }

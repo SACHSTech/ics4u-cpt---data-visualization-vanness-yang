@@ -89,6 +89,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
+import javafx.stage.Stage;
+import javafx.event.EventHandler;
 
 public class Interface extends Application{
 
@@ -156,7 +166,7 @@ public class Interface extends Application{
 
         // ChoiceBox for Filters
         ChoiceBox filters = new ChoiceBox();
-        filters.getItems().addAll("Continent Filter    ", "Default", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
+        filters.getItems().addAll("Continent Filter       ", "Default", "Africa", "Asia", "Australia", "Europe", "North America", "South America");
         filters.getSelectionModel().selectFirst();
         
         // Death Toll Data TableView
@@ -198,7 +208,7 @@ public class Interface extends Application{
 
         // MergeSort ChoiceBox for deathData
         ChoiceBox deathSortBox = new ChoiceBox();
-        deathSortBox.getItems().addAll("Death Data Sort ", "Default", "Alphabetical", "Death Toll");
+        deathSortBox.getItems().addAll("Death Data Sort                           ", "Default", "Alphabetical", "Death Toll");
         deathSortBox.getSelectionModel().selectFirst();
         final ChangeListener<String> deathSortBoxListener =
             (ObservableValue<? extends String> observable,
@@ -290,7 +300,8 @@ public class Interface extends Application{
 
         // Textfield for search box 
         TextField text = new TextField("");
-        text.setMaxSize(140, TextField.USE_COMPUTED_SIZE);
+        //text.setMaxSize(140, TextField.USE_COMPUTED_SIZE);
+        text.setPrefWidth(200);
         final ChangeListener<String> searchListener =
             (ObservableValue<? extends String> observable,
              String oldValue, String newValue) -> {
@@ -344,14 +355,16 @@ public class Interface extends Application{
         gdpMedian.getStylesheets().add(insetTextCss);
         gdpDeviation.setId("label1");
         gdpDeviation.getStylesheets().add(insetTextCss);
-
+        
+        // Bar Chart for Country VS Deaths
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setCategories(deathData.getCountryObservableList());
-        NumberAxis yAxis = new NumberAxis("Deaths", 0.0d, 2000.0d, 250.0d);
+        NumberAxis yAxis = new NumberAxis("Deaths Per Million", 0.0d, 2000.0d, 250.0d);
         ObservableList<BarChart.Series> deathBarchart = FXCollections.observableArrayList(deathData.getBarObjects());
         BarChart deathChart = new BarChart(xAxis, yAxis, deathBarchart, 10.0d);
         deathChart.setLegendVisible(false);
 
+        // Bar Chart for Country VS GDP 
         CategoryAxis xAxis2 = new CategoryAxis();
         xAxis2.setCategories(gdpData.getCountryObservableList());
         NumberAxis yAxis2 = new NumberAxis("GDP", 0.0d, 120000.0d, 10000.0d);
@@ -359,13 +372,28 @@ public class Interface extends Application{
         BarChart gdpChart = new BarChart(xAxis2, yAxis2, gdpBarchart, 10.0d);
         gdpChart.setLegendVisible(false);
 
+        // Scatter Plot for GDP VS Deaths 
+        ScatterChart scatterChart;
+        NumberAxis xAxis3;
+        NumberAxis yAxis3;
+
+        xAxis3 = new NumberAxis("GDP", 0.0d, 120000.0d, 10000.0d);
+        yAxis3 = new NumberAxis("Deaths Per Million", 0.0d, 2000.0d, 250.0d);
+        final Series<Number, Number> series = new Series<>();
+        series.setName("Series 1");
+        scatterChart = new ScatterChart(xAxis3, yAxis3);
+        scatterChart.getData().add(this.getScatterObjects());
+        scatterChart.setLegendVisible(false);
+
+        // Tab Pane for Charts
         TabPane chartTabPane = new TabPane();
-        chartTabPane.setPrefSize(700, 525);
+        chartTabPane.setPrefSize(700, 500);
         chartTabPane.setMinSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         chartTabPane.setMaxSize(TabPane.USE_PREF_SIZE, TabPane.USE_PREF_SIZE);
         
         Tab deathChartTab = new Tab();
         Tab gdpChartTab = new Tab();
+        Tab totalChartTab = new Tab();
  
         chartTabPane.setRotateGraphic(false);
         chartTabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.SELECTED_TAB);
@@ -375,11 +403,42 @@ public class Interface extends Application{
         deathChartTab.setContent(deathChart);
         gdpChartTab.setText("Country VS. GDP");
         gdpChartTab.setContent(gdpChart);
+        totalChartTab.setText("GDP VS. Deaths");
+        totalChartTab.setContent(scatterChart);
         chartTabPane.getTabs().add(deathChartTab);
         chartTabPane.getTabs().add(gdpChartTab);
+        chartTabPane.getTabs().add(totalChartTab);
+        
+        final Label viewRecord = new Label();
+        //viewRecord.setFont(Font.font(FontWeight.BOLD));
 
+        deathTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                //Check whether item is selected and set value of selected item to Label
+                if(deathTableView.getSelectionModel().getSelectedItem() != null) 
+                {    
+                    Deaths record = (Deaths) deathTableView.getSelectionModel().getSelectedItem();
+                    viewRecord.setText("     COUNTRY: " + record.getCountryName() + "     CODE: " + record.getCountryCode() + "     CONTINENT: " + record.getCountryContinent() + "     DATE: " + record.getDeathDate() + "     DEATHS: " + record.getDeathPerMillion());
+                }
+            }
+        });
+        
+        gdpTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
+                //Check whether item is selected and set value of selected item to Label
+                if(gdpTableView.getSelectionModel().getSelectedItem() != null) 
+                {    
+                    Gdp record = (Gdp) gdpTableView.getSelectionModel().getSelectedItem();
+                    viewRecord.setText("     COUNTRY: " + record.getCountryName() + "     CODE: " + record.getCountryCode() + "     CONTINENT: " + record.getCountryContinent() + "     YEAR: " + record.getGdpYear() + "     GDP: " + record.getGdpPerCapita());
+                }
+            }
+        });
 
+        // Grid Pane creation 
         GridPane gridPane = new GridPane();
+
         gridPane.add(tabPane, 0, 0, 1, 1);
         gridPane.add(filters, 1, 0, 1, 1);
         gridPane.add(deathSortBox, 2, 0, 1, 1);
@@ -400,6 +459,8 @@ public class Interface extends Application{
         gridPane.add(gdpMedian, 4, 2, 1, 1);
         gridPane.add(gdpDeviation, 4, 3);
         gridPane.add(chartTabPane, 1, 5, 5, 1);
+        gridPane.add(viewRecord, 1, 6, 6, 1);
+
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
@@ -416,6 +477,17 @@ public class Interface extends Application{
     @Override public void start(Stage primaryStage) throws Exception {
         primaryStage.setScene(new Scene(createContent()));
         primaryStage.show();
+    }
+
+    public XYChart.Series getScatterObjects(){
+
+        XYChart.Series<Double, Double> series = new ScatterChart.Series<>();
+
+        for(int i = 0; i < 166; i++){
+            series.getData().add(new XYChart.Data(gdpData.getGdpElement(i), deathData.getDeathElement(i)));
+        }
+
+        return series;
     }
 
 }

@@ -28,6 +28,10 @@ public class Gdpdataset {
         return gdpData;
     }
 
+    public double getGdpElement(int i){
+        return gdpData.get(i).getGdpPerCapita();
+    }
+
     public void mergeSort(String type){       
         divide(0, gdpData.size() - 1, type);
     }
@@ -264,6 +268,17 @@ public class Gdpdataset {
 
 
         return series;
+    }
+
+    public ObservableList<Double> getGdpObservableList(){
+
+        ArrayList<Double> temp = new ArrayList<Double>();
+
+        for(int i = 0; i < gdpData.size(); i++){
+            temp.add(gdpData.get(i).getGdpPerCapita());
+        }
+
+        return FXCollections.observableList(temp);
     }
 
 
