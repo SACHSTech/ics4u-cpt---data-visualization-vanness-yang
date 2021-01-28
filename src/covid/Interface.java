@@ -180,7 +180,7 @@ public class Interface extends Application {
 
         // MergeSort ChoiceBox for deathData
         ChoiceBox deathSortBox = new ChoiceBox();
-        deathSortBox.getItems().addAll("Death Data Sort                           ", "Default", "Alphabetical", "Death Toll");
+        deathSortBox.getItems().addAll("Death Data Sort                           ", "Alphabetical", "Death Toll");
         deathSortBox.getSelectionModel().selectFirst();
 
         // Listener for ChoiceBox for deathData sorting 
@@ -189,11 +189,10 @@ public class Interface extends Application {
              String oldValue, String newValue) -> {
                 String change = (String) deathSortBox.getValue();
                 
-                if (!change.equals("Default")) {
-                    // Updating the TableView 
-                    final ObservableList<Deaths> newDeathTable = deathData.getSortedObservableList(change);
-                    deathTableView.setItems(newDeathTable);
-                }
+                // Updating the TableView 
+                final ObservableList<Deaths> newDeathTable = deathData.getSortedObservableList(change);
+                deathTableView.setItems(newDeathTable);
+            
             };
         
         // Adding the listener to the ChoiceBox 
@@ -244,7 +243,7 @@ public class Interface extends Application {
 
         // MergeSort ChoiceBox for gdpData
         ChoiceBox gdpSortBox = new ChoiceBox();
-        gdpSortBox.getItems().addAll("GDP Data Sort      ", "Default", "Alphabetical", "GDP");
+        gdpSortBox.getItems().addAll("GDP Data Sort      ", "Alphabetical", "GDP");
         gdpSortBox.getSelectionModel().selectFirst();
 
         // Listener for the ChoiceBox for sorting gdpData 
@@ -253,11 +252,10 @@ public class Interface extends Application {
              String oldValue, String newValue) -> {
                 String change = (String) gdpSortBox.getValue();
                 
-                if(!change.equals("Default")){
-                    // Updating the TableView
-                    final ObservableList<Gdp> newGdpTable = gdpData.getSortedObservableList(change);
-                    gdpTableView.setItems(newGdpTable);
-                }
+                // Updating the TableView
+                final ObservableList<Gdp> newGdpTable = gdpData.getSortedObservableList(change);
+                gdpTableView.setItems(newGdpTable);
+                
             };
 
         // Adding the listener to the ChoiceBox
