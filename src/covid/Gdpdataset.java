@@ -6,37 +6,85 @@ import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.BarChart;
 
+/**
+* Data visualization CPT (Gdpdataset class)
+* @author: V. Yang
+* 
+*/
 public class Gdpdataset {
 
+    // Attributes 
     private ArrayList<Gdp> gdpData;
 
-    public Gdpdataset(){
+    /**
+    * Constructor - creates a new Gdpdataset instance 
+    *
+    * @author: V. Yang
+    */
+    public Gdpdataset() {
         gdpData = new ArrayList<Gdp>();
     }
 
-    public void addGdpData(Gdp newGdp){
+    /**
+    * Adding a new gdp instance 
+    *
+    * @param newGdp - a new gdp instance  
+    * @author: V. Yang
+    */
+    public void addGdpData(Gdp newGdp) {
         gdpData.add(newGdp);
     }
 
-    public void printResults(){
-        for(int i = 0; i < gdpData.size(); i++){
+    /**
+    * Printing the results to the screen for testing purposes
+    *
+    * @author: V. Yang
+    */
+    public void printResults() {
+        for (int i = 0; i < gdpData.size(); i++) {
             System.out.println(gdpData.get(i).toString());
         }
     }
 
-    public ArrayList<Gdp> getGdpObject(){
+    /**
+    * Getting a gdp instance
+    *
+    * @return a gdp instance 
+    * @author: V. Yang
+    */
+    public ArrayList<Gdp> getGdpObject() {
         return gdpData;
     }
 
-    public double getGdpElement(int i){
+    /**
+    * Returning a the gdp 
+    *
+    * @return the gdp 
+    * @author: V. Yang
+    */
+    public double getGdpElement(int i) {
         return gdpData.get(i).getGdpPerCapita();
     }
 
-    public void mergeSort(String type){       
+   /**
+    * mergeSort method callin the divide method 
+    *
+    * @param type - how to sort the data 
+    * @author: V. Yang
+    */
+    public void mergeSort(String type) {       
         divide(0, gdpData.size() - 1, type);
     }
 
-    public void divide(int startIndex, int endIndex, String type){
+    /**
+    * Dividing the data for mergeSort 
+    *
+    * @param startIndex - the starting index
+    * @param endIndex - the ending index 
+    * @param type - how to sort the data 
+    * @author: V. Yang
+    */
+    public void divide(int startIndex, int endIndex, String type) {
         
         //Divide till you breakdown your list to single element
         if (startIndex < endIndex && (endIndex - startIndex) >= 1) {
@@ -49,30 +97,43 @@ public class Gdpdataset {
         }       
     }   
 
-    public void merger(int startIndex, int midIndex, int endIndex, String type){
+    /**
+    * Merging the divided data 
+    *
+    * @param startIndex - the starting index 
+    * @param midIndex - the middle index
+    * @param endIndex - the end index 
+    * @param type - how to sort the data  
+    * @author: V. Yang
+    */
+    public void merger(int startIndex, int midIndex, int endIndex, String type) {
         
         //Below is the mergedarray that will be sorted array Array[i-midIndex] , Array[(midIndex+1)-endIndex]
         ArrayList<Gdp> mergedSortedArray = new ArrayList<Gdp>();
         
         int leftIndex = startIndex;
         int rightIndex = midIndex + 1;
+        int comparison; 
+        int i = 0;
+        int j = startIndex;
         
-        while(leftIndex <= midIndex && rightIndex <= endIndex){
-            if(type.equalsIgnoreCase("GDP")){
+        while (leftIndex <= midIndex && rightIndex <= endIndex) {
+            // Sort by increasing GDP 
+            if (type.equalsIgnoreCase("GDP")) {
                 if((gdpData.get(leftIndex).getGdpPerCapita()) <= (gdpData.get(rightIndex).getGdpPerCapita())){
                     mergedSortedArray.add(gdpData.get(leftIndex));
                     leftIndex++;
-                }else{
+                } else {
                     mergedSortedArray.add(gdpData.get(rightIndex));
                     rightIndex++;
                 }
-            }else if(type.equalsIgnoreCase("Alphabetical")){
-                int comparison; 
+            // Sort in alphabetical order 
+            } else if(type.equalsIgnoreCase("Alphabetical")) {
                 comparison = gdpData.get(leftIndex).getCountryName().compareTo(gdpData.get(rightIndex).getCountryName());
-                if(comparison < 0){
+                if (comparison < 0) {
                     mergedSortedArray.add(gdpData.get(leftIndex));
                     leftIndex++;
-                }else if(comparison > 0){
+                } else if (comparison > 0) {
                     mergedSortedArray.add(gdpData.get(rightIndex));
                     rightIndex++;
                 }
@@ -80,27 +141,31 @@ public class Gdpdataset {
             
         }       
         
-        //Either of below while loop will execute
-        while(leftIndex <= midIndex){
+        while (leftIndex <= midIndex) {
             mergedSortedArray.add(gdpData.get(leftIndex));
             leftIndex++;
         }
         
-        while(rightIndex <= endIndex){
+        while (rightIndex <= endIndex) {
             mergedSortedArray.add(gdpData.get(rightIndex));
             rightIndex++;
         }
         
-        int i = 0;
-        int j = startIndex;
         //Setting sorted array to original one
-        while(i < mergedSortedArray.size()){
+        while (i < mergedSortedArray.size()) {
             gdpData.set(j, mergedSortedArray.get(i++));
             j++;
         }
     }
 
-    public ObservableList<Gdp> linearSearch(String key){
+    /**
+    * linearSearch method 
+    *
+    * @param key - whatever is searched for 
+    * @return an ObservableList of the searched items 
+    * @author: V. Yang
+    */
+    public ObservableList<Gdp> linearSearch(String key) {
         
         String element1;
         String element2;
@@ -109,21 +174,24 @@ public class Gdpdataset {
 
         ArrayList<Gdp> searchResults = new ArrayList<Gdp>();
 
-        if(key.equals("")){
-            for(i = 0; i < gdpData.size(); i++){
+        // Dataset is the same if nothing is typed into the TextField 
+        if (key.equals("")) {
+            for (i = 0; i < gdpData.size(); i++) {
                 searchResults.add(gdpData.get(i));
             }
-        }else{
-            for(i = 0; i < gdpData.size(); i++){
+        // Searching for whatever is typed in the TextField 
+        } else {
+            for (i = 0; i < gdpData.size(); i++) {
                 element1 = gdpData.get(i).getCountryName();
                 element2 = gdpData.get(i).getCountryCode();  
                 element3 = gdpData.get(i).getCountryContinent();
-     
-                if(element1.equalsIgnoreCase(key)){
+                
+                // Adding the searched into the ArrayList
+                if (element1.equalsIgnoreCase(key)) {
                     searchResults.add(gdpData.get(i));       
-                }else if(element2.equalsIgnoreCase(key)){
+                } else if (element2.equalsIgnoreCase(key)) {
                     searchResults.add(gdpData.get(i));
-                }else if(element3.equalsIgnoreCase(key)){
+                } else if (element3.equalsIgnoreCase(key)) {
                     searchResults.add(gdpData.get(i));
                 }
             }
@@ -133,47 +201,68 @@ public class Gdpdataset {
        
     }
 
-    public ObservableList<Gdp> getSortedObservableList(String sort){
+    /**
+    * Getting an ObservableList of the sorted data 
+    *
+    * @param sort - how to sort the data 
+    * @return an ObservableList of the sorted data 
+    * @author: V. Yang
+    */
+    public ObservableList<Gdp> getSortedObservableList(String sort) {
         this.mergeSort(sort);
 
         return FXCollections.observableList(gdpData);
 
     }
 
-    public ObservableList<Gdp> filter(String filter){
+    /**
+    * Filtering the data by continent 
+    *
+    * @param filter - the continent to filter the data 
+    * @return an ObservableList of the filtered data 
+    * @author: V. Yang
+    */
+    public ObservableList<Gdp> filter(String filter) {
         
         String element;
         int i;
 
         ArrayList<Gdp> filtered = new ArrayList<Gdp>();
 
-        if(filter.equals("Default")){
-            for(i = 0; i < gdpData.size(); i++){
+        // Default filter it the normal filter (nothing changes)
+        if (filter.equals("Default")) {
+            for (i = 0; i < gdpData.size(); i++) {
                 filtered.add(gdpData.get(i));
             }
-        }else{
-            for(i = 0; i < gdpData.size(); i++){
+        // Filtering by continent 
+        } else {
+            for (i = 0; i < gdpData.size(); i++) {
                 element = gdpData.get(i).getCountryContinent();
      
-                if(element.equalsIgnoreCase(filter)){
+                if (element.equalsIgnoreCase(filter)) {
                     filtered.add(gdpData.get(i));       
                 }
             }
         }
         
-       
        return FXCollections.observableList(filtered);
        
     }
 
-    public double max(){
+    /**
+    * Finding the max gdp  
+    *
+    * @return the maximum gdp
+    * @author: V. Yang
+    */
+    public double max() {
 
         double max = 0;
         int i;
         
-        for(i = 0; i < gdpData.size(); i++){
+        for (i = 0; i < gdpData.size(); i++) {
             // Finding the Max
-            if(gdpData.get(i).getGdpPerCapita() >= max){
+            if (gdpData.get(i).getGdpPerCapita() >= max) {
                 max = Math.round(gdpData.get(i).getGdpPerCapita() * 100.0) / 100.0;
             }
         }
@@ -182,12 +271,20 @@ public class Gdpdataset {
 
     }
 
-    public double min(){
+    /**
+    * Finding the min gdp 
+    *
+    * @return the min gdp 
+    * @author: V. Yang
+    */
+    public double min() {
+        
         int i;
         double min = 200000;
 
-        for(i = 0; i < gdpData.size(); i++){
-            if(gdpData.get(i).getGdpPerCapita() <= min){
+        for (i = 0; i < gdpData.size(); i++) {
+            // Finding the min 
+            if (gdpData.get(i).getGdpPerCapita() <= min) {
                 min = Math.round(gdpData.get(i).getGdpPerCapita() * 100.0) / 100.0;
             }
         }
@@ -195,12 +292,18 @@ public class Gdpdataset {
         return min;
     }
 
-    public double average(){
+    /**
+    * Finding the average gdp 
+    *
+    * @return the average gdp 
+    * @author: V. Yang
+    */
+    public double average() {
         int i; 
         double total = 0;
         double average;
 
-        for(i = 0; i < gdpData.size(); i++){
+        for (i = 0; i < gdpData.size(); i++) {
             // Finding the total 
             total = total + gdpData.get(i).getGdpPerCapita();
         }
@@ -212,13 +315,25 @@ public class Gdpdataset {
 
     }
 
-    public double median(){
+    /**
+    * Finding the median of the gdp data  
+    *
+    * @return the median of the gdp data 
+    * @author: V. Yang
+    */
+    public double median() {
 
         return Math.round(gdpData.get(gdpData.size() / 2).getGdpPerCapita() * 100.0) / 100.0;
         
     }
 
-    public double deviation(){
+    /**
+    * Finding the standard deviation 
+    *
+    * @return the standard deviation of the gdp data 
+    * @author: V. Yang
+    */
+    public double deviation() {
         double mean;
         double squared;
         double sum = 0;
@@ -226,51 +341,80 @@ public class Gdpdataset {
         double deviation;
         int i;
 
+        // Finding the average 
         mean = this.average();
         
-        for(i = 0; i < gdpData.size(); i++){
+        for (i = 0; i < gdpData.size(); i++) {
+            // Finding the difference between the data point and the average and squaring it 
             squared = Math.pow((gdpData.get(i).getGdpPerCapita() - mean), 2);
-            sum = sum + squared;
             
-        
+            // Finding the sum of the squared differences 
+            sum = sum + squared;
         }
 
+        // Finding the average of the sum
         meanSum = sum / gdpData.size();
+
+        // Square rooting the average of the sum
         deviation = Math.round(Math.sqrt(meanSum) * 100.0) / 100.0;
 
         return deviation;
 
     }
 
-    public double count(){
+    /**
+    * Finding the count of the gdp data  
+    *
+    * @return the count of the gdp data 
+    * @author: V. Yang
+    */
+    public double count() {
 
         return gdpData.size();
     }
 
+    /**
+    * Getting an ObservableList of all the countries
+    *
+    * @return an ObservableList of all the countries
+    * @author: V. Yang
+    */
     public ObservableList<String> getCountryObservableList(){
 
         ArrayList<String> temp = new ArrayList<String>();
 
-        for(int i = 0; i < gdpData.size(); i++){
+        for (int i = 0; i < gdpData.size(); i++) {
             temp.add(gdpData.get(i).getCountryName());
         }
 
         return FXCollections.observableList(temp);
     }
 
-    public BarChart.Series getBarObjects(){
+    /**
+    * Getting a series for the BarChart 
+    *
+    * @return a series of the BarChart data (Country VS GDP)
+    * @author: V. Yang
+    */
+    public BarChart.Series getBarObjects() {
 
         BarChart.Series<String, Integer> series = new BarChart.Series<>();
 
-        for(int i = 0; i < gdpData.size(); i++){
+        // Creating a series for the BarChart
+        for (int i = 0; i < gdpData.size(); i++) {
             series.getData().add(new BarChart.Data(gdpData.get(i).getCountryName(), gdpData.get(i).getGdpPerCapita()));
         }
-
 
         return series;
     }
 
-    public ObservableList<Double> getGdpObservableList(){
+    /**
+    * Getting an ObservableList of all the gdps
+    *
+    * @return an ObservableList of all the gdps
+    * @author: V. Yang
+    */
+    public ObservableList<Double> getGdpObservableList() {
 
         ArrayList<Double> temp = new ArrayList<Double>();
 
