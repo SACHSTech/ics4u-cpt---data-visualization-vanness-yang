@@ -170,6 +170,8 @@ public class Gdpdataset {
         String element1;
         String element2;
         String element3;
+        String element4;
+        String element5;
         int i;
 
         ArrayList<Gdp> searchResults = new ArrayList<Gdp>();
@@ -185,6 +187,8 @@ public class Gdpdataset {
                 element1 = gdpData.get(i).getCountryName();
                 element2 = gdpData.get(i).getCountryCode();  
                 element3 = gdpData.get(i).getCountryContinent();
+                element4 = gdpData.get(i).getGdpYear();
+                element5 = String.valueOf(gdpData.get(i).getGdpPerCapita());
                 
                 // Adding the searched into the ArrayList
                 if (element1.equalsIgnoreCase(key)) {
@@ -192,6 +196,10 @@ public class Gdpdataset {
                 } else if (element2.equalsIgnoreCase(key)) {
                     searchResults.add(gdpData.get(i));
                 } else if (element3.equalsIgnoreCase(key)) {
+                    searchResults.add(gdpData.get(i));
+                } else if (element4.equalsIgnoreCase(key)) {
+                    searchResults.add(gdpData.get(i));
+                } else if (element5.equalsIgnoreCase(key)) { 
                     searchResults.add(gdpData.get(i));
                 }
             }

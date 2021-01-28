@@ -160,6 +160,8 @@ public class Deathdataset {
         String element1;
         String element2;
         String element3;
+        String element4;
+        String element5;
 
         ArrayList<Deaths> searchResults = new ArrayList<Deaths>();
 
@@ -167,6 +169,8 @@ public class Deathdataset {
            element1 = deathData.get(i).getCountryName();
            element2 = deathData.get(i).getCountryCode();  
            element3 = deathData.get(i).getCountryContinent();
+           element4 = deathData.get(i).getDeathDate();
+           element5 = String.valueOf(deathData.get(i).getDeathPerMillion());
 
            // deathData wil be the same as original if nothing is typed in the TextField 
             if (key.equals("")) {
@@ -180,6 +184,10 @@ public class Deathdataset {
                 } else if (element2.equalsIgnoreCase(key)) {
                     searchResults.add(deathData.get(i));
                 } else if (element3.equalsIgnoreCase(key)) {
+                    searchResults.add(deathData.get(i));
+                } else if (element4.equalsIgnoreCase(key)) {
+                    searchResults.add(deathData.get(i));
+                } else if (element5.equalsIgnoreCase(key)) { 
                     searchResults.add(deathData.get(i));
                 }
             }  

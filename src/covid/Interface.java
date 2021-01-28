@@ -28,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.geometry.Insets;
 
 /**
 * Data visualization CPT (Interface)
@@ -474,6 +475,7 @@ public class Interface extends Application {
         hbox.setPrefWidth(1250);
         hbox.setPrefHeight(660);
         hbox.getChildren().addAll(tabPane, gridPane);
+        hbox.setPadding(new Insets(10, 10, 10, 10));
         hbox.setAlignment(Pos.TOP_LEFT);
         return hbox;
         
